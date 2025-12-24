@@ -19,7 +19,6 @@ public class CustomUserDetails implements UserDetails {
         return user.getStoreId();
     }
 
-    //return Role enum
     public Role getRole() {
         return user.getRole();
     }
@@ -41,8 +40,24 @@ public class CustomUserDetails implements UserDetails {
         return user.getUsername();
     }
 
-    @Override public boolean isAccountNonExpired() { return true; }
-    @Override public boolean isAccountNonLocked() { return true; }
-    @Override public boolean isCredentialsNonExpired() { return true; }
-    @Override public boolean isEnabled() { return user.isEnabled(); }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    // IMPORTANT FOR POS SECURITY
+    @Override
+    public boolean isEnabled() {
+        return user.isEnabled();
+    }
 }

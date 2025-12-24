@@ -1,6 +1,5 @@
 package com.nazir.pos.user.dto;
 
-import com.nazir.pos.user.Role;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,7 +8,7 @@ import lombok.Data;
 public class UserResponse {
     private Long id;
     private String username;
-    private Role role;
+    private String role;
     private Long storeId;
     private boolean enabled;
 }
