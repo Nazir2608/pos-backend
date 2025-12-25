@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.*;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,19 +26,32 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+                // CORS for cookie-based auth
+                .cors(Customizer.withDefaults())
+                // Disable defaults
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
+                // Stateless
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // Authorization
                 .authorizeHttpRequests(auth -> auth
+                        // Auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/logout").permitAll()
+                        // Admin
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/manager/**").hasAnyRole("ADMIN", "MANAGER")
-                        .requestMatchers("/api/cashier/**").hasAnyRole("ADMIN", "CASHIER")
-                        .requestMatchers("/api/manage/categories").hasAnyRole("ADMIN", "MANAGER")
-                        .requestMatchers("/api/manage/products").hasAnyRole("ADMIN", "MANAGER")
+                        // POS Config
+                        .requestMatchers("/api/admin/pos-config/**").hasRole("ADMIN")
+                        // Category & Product management
+                        .requestMatchers("/api/manage/categories/**").hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers("/api/manage/products/**").hasAnyRole("ADMIN", "MANAGER")
+                        // Billing
+                        .requestMatchers("/api/cashier/billing/**").hasAnyRole("ADMIN", "CASHIER")
+                        // Everything else
                         .anyRequest().authenticated()
                 )
+                // JWT filter
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
