@@ -1,28 +1,22 @@
-package com.nazir.pos.billing;
+package com.nazir.pos.billing.dto;
 
-import jakarta.persistence.*;
-import lombok.*;
+import com.nazir.pos.billing.PaymentMode;
+import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity
-@Table(name = "invoices")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Builder
-public class Invoice {
+public class InvoicePrintResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    // Invoice
     private String invoiceNo;
-    private Long storeId;
+    private LocalDateTime invoiceDate;
+    private PaymentMode paymentMode;
 
     // POS snapshot
-    private Long posId;
     private String posName;
     private String posGstNo;
     private String posAddress;
@@ -35,12 +29,11 @@ public class Invoice {
     private String customerMobile;
     private String customerAddress;
 
+    // Items
+    private List<InvoiceItemPrintDto> items;
+
+    // Totals
     private Double subTotal;
     private Double gstAmount;
     private Double totalAmount;
-
-    @Enumerated(EnumType.STRING)
-    private PaymentMode paymentMode;
-
-    private LocalDateTime createdAt;
 }
