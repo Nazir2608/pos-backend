@@ -48,6 +48,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/manage/products/**").hasAnyRole("ADMIN", "MANAGER")
                         // Billing
                         .requestMatchers("/api/cashier/billing/**").hasAnyRole("ADMIN", "CASHIER")
+                        // SALES REPORTS
+                        .requestMatchers("/api/reports/sales/summary").hasAnyRole("ADMIN", "MANAGER", "CASHIER")
+                        .requestMatchers("/api/reports/sales/pos").hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers("/api/reports/sales/cashier").hasAnyRole("ADMIN", "MANAGER")
                         // Everything else
                         .anyRequest().authenticated()
                 )

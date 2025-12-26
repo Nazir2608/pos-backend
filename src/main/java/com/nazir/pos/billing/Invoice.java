@@ -30,6 +30,10 @@ public class Invoice {
     private String posMobile1;
     private String posMobile2;
 
+    // Cashier snapshot FIX
+    private Long cashierId;
+    private String cashierUsername;
+
     // Customer (optional)
     private String customerName;
     private String customerMobile;
