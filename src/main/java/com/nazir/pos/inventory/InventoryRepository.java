@@ -9,15 +9,15 @@ public interface InventoryRepository
         extends JpaRepository<InventoryTransaction, Long> {
 
     @Query("""
-        SELECT COALESCE(SUM(
-            CASE WHEN i.type = 'IN' THEN i.quantity
-                 WHEN i.type = 'OUT' THEN -i.quantity
-            END
-        ), 0)
-        FROM InventoryTransaction i
-        WHERE i.productId = :productId
-          AND i.storeId = :storeId
-    """)
+                SELECT COALESCE(SUM(
+                    CASE WHEN i.type = 'IN' THEN i.quantity
+                         WHEN i.type = 'OUT' THEN -i.quantity
+                    END
+                ), 0)
+                FROM InventoryTransaction i
+                WHERE i.productId = :productId
+                  AND i.storeId = :storeId
+            """)
     Integer getAvailableStock(Long productId, Long storeId);
 
     List<InventoryTransaction> findByProductIdAndStoreId(

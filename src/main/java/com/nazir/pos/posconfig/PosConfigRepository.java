@@ -1,7 +1,5 @@
 package com.nazir.pos.posconfig;
 
-import com.nazir.pos.category.Category;
-import com.nazir.pos.posconfig.dto.PosConfigResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,0 +1,6 @@
+CREATE INDEX idx_invoice_store_created ON invoice(store_id, created_at);
+CREATE INDEX idx_invoice_cashier_created ON invoice(cashier_id, created_at);
+CREATE INDEX idx_invoice_pos_created ON invoice(pos_id, created_at);
+CREATE INDEX idx_invoice_payment_mode ON invoice(payment_mode);
+
+CREATE INDEX idx_invoice_store_created ON invoices(store_id, created_at);

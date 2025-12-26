@@ -1,5 +1,6 @@
 package com.nazir.pos.billing;
 
+import com.nazir.pos.auth.CustomUserDetails;
 import com.nazir.pos.billing.dto.CreateInvoiceRequest;
 import com.nazir.pos.billing.dto.InvoiceResponse;
 import com.nazir.pos.inventory.InventoryService;
@@ -7,8 +8,11 @@ import com.nazir.pos.posconfig.PosConfig;
 import com.nazir.pos.posconfig.PosConfigRepository;
 import com.nazir.pos.product.Product;
 import com.nazir.pos.product.ProductRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,6 +29,7 @@ public class BillingService {
     private final InventoryService inventoryService;
     private final PosConfigRepository posConfigRepository;
 
+    @Transactional
     public InvoiceResponse createInvoice(CreateInvoiceRequest request, Long storeId, Long posId) {
         PosConfig pos = posConfigRepository.findByIdAndStoreId(posId, storeId)
                 .orElseThrow(() -> new IllegalStateException("POS config not found"));
@@ -32,6 +37,8 @@ public class BillingService {
         double subTotal = 0;
         double gstTotal = 0;
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails cashier = (CustomUserDetails) auth.getPrincipal();
         Invoice invoice = Invoice.builder().invoiceNo("INV-" + UUID.randomUUID()).storeId(storeId)
                 // POS snapshot
                 .posId(pos.getId())
@@ -41,6 +48,10 @@ public class BillingService {
                 .posLocation(pos.getLocation())
                 .posMobile1(pos.getMobile1())
                 .posMobile2(pos.getMobile2())
+
+                // Cashier snapshot FIX
+                .cashierId(cashier.getStoreId())
+                .cashierUsername(cashier.getUsername())
 
                 // Customer snapshot (optional)
                 .customerName(request.getCustomerName())
