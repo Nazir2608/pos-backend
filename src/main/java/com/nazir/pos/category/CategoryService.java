@@ -1,7 +1,7 @@
 package com.nazir.pos.category;
 
-import com.nazir.pos.category.dto.CreateCategoryRequest;
 import com.nazir.pos.category.dto.CategoryResponse;
+import com.nazir.pos.category.dto.CreateCategoryRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,6 +46,7 @@ public class CategoryService {
         categoryRepository.save(category);
         log.info("CATEGORY | Disabled categoryId={}, storeId={}", categoryId, storeId);
     }
+
     public void enableCategory(Long categoryId, Long storeId) {
         Category category = categoryRepository
                 .findByIdAndStoreId(categoryId, storeId)

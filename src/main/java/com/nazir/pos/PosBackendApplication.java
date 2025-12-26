@@ -1,4 +1,3 @@
-
 package com.nazir.pos;
 
 import org.springframework.boot.SpringApplication;

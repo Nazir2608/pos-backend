@@ -1,10 +1,11 @@
 package com.nazir.pos.auth;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -52,7 +53,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 CustomUserDetails user = (CustomUserDetails) userDetailsService.loadUserByUsername(username);
 
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null,
-                                user.getAuthorities());
+                        user.getAuthorities());
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }

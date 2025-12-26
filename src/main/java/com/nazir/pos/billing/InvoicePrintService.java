@@ -22,21 +22,21 @@ public class InvoicePrintService {
                 .orElseThrow(() -> new IllegalArgumentException("Invoice not found"));
 
         List<InvoiceItemPrintDto> items = invoiceItemRepository.findByInvoiceId(invoice.getId())
-                        .stream()
-                        .map(item -> {
-                            Product product = productRepository
-                                    .findById(item.getProductId())
-                                    .orElseThrow();
-                            return InvoiceItemPrintDto.builder()
-                                    .productName(product.getName())
-                                    .quantity(item.getQuantity())
-                                    .price(item.getPrice())
-                                    .gstPercentage(item.getGstPercentage())
-                                    .gstAmount(item.getGstAmount())
-                                    .totalAmount(item.getTotalAmount())
-                                    .build();
-                        })
-                        .toList();
+                .stream()
+                .map(item -> {
+                    Product product = productRepository
+                            .findById(item.getProductId())
+                            .orElseThrow();
+                    return InvoiceItemPrintDto.builder()
+                            .productName(product.getName())
+                            .quantity(item.getQuantity())
+                            .price(item.getPrice())
+                            .gstPercentage(item.getGstPercentage())
+                            .gstAmount(item.getGstAmount())
+                            .totalAmount(item.getTotalAmount())
+                            .build();
+                })
+                .toList();
 
         return InvoicePrintResponse.builder()
                 .invoiceNo(invoice.getInvoiceNo())

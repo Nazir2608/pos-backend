@@ -1,11 +1,12 @@
 package com.nazir.pos.category;
 
 import com.nazir.pos.auth.CustomUserDetails;
-import com.nazir.pos.category.dto.CreateCategoryRequest;
 import com.nazir.pos.category.dto.CategoryResponse;
+import com.nazir.pos.category.dto.CreateCategoryRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class CategoryController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<CategoryResponse> createCategory(@Valid @RequestBody CreateCategoryRequest request,
-            Authentication authentication) {
+                                                           Authentication authentication) {
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(categoryService.createCategory(request, user.getStoreId()));

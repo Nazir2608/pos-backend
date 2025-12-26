@@ -1,15 +1,20 @@
 package com.nazir.pos.report.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+import java.util.List;
+
+@Data
 @AllArgsConstructor
-public class PosSalesResponse {
-    private Long posId;
+public class DailyClosingResponse {
+
     private String posName;
+    private String date;
+
     private Long billCount;
     private Double totalSales;
     private Double gstCollected;
-}
 
+    private List<PaymentModeSalesResponse> paymentBreakup;
+}

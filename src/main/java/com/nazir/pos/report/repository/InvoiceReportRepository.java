@@ -15,6 +15,7 @@ public interface InvoiceReportRepository {
 
     SalesTotalResponse total(SalesReportRequest req, Long storeId);
 
+    List<PaymentModeSalesResponse> paymentModeTotals(SalesReportRequest req, Long storeId);
 }
 
 
