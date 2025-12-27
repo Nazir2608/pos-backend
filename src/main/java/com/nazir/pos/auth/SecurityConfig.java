@@ -40,6 +40,8 @@ public class SecurityConfig {
                         // Auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/logout").permitAll()
+                        //Swagger
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                         // Admin
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         // POS Config

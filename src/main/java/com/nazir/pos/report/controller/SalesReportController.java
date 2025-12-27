@@ -4,6 +4,8 @@ import com.nazir.pos.auth.CustomUserDetails;
 import com.nazir.pos.common.PageResponse;
 import com.nazir.pos.report.dto.*;
 import com.nazir.pos.report.service.SalesReportService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "Sales Reports", description = "Sales reporting APIs")
 @RestController
 @RequestMapping("/api/reports/sales")
 @RequiredArgsConstructor
@@ -27,6 +30,7 @@ public class SalesReportController {
      * - Pagination supported (default page=0, size=20)
      * - Filterable by date, POS, cashier, payment mode
      */
+    @Operation(summary = "Sales Summary", description = "Paginated sales summary with filters")
     @GetMapping("/summary")
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','CASHIER')")
     public ResponseEntity<PageResponse<SalesSummaryResponse>> summary(SalesReportRequest request, Authentication auth) {
